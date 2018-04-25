@@ -4,7 +4,12 @@ package sequence.hadoop;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
- 
+
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import javax.imageio.stream.ImageInputStream;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -19,14 +24,12 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
-import org.apache.log4j.Logger;
  
  
 public class BinaryFilesToHadoopSequenceFile {
- 
-        private static Logger logger = Logger.getLogger(BinaryFilesToHadoopSequenceFile.class);
- 
-        public static class BinaryFilesToHadoopSequenceFileMapper extends Mapper<Object, Text, Text, BytesWritable> {
+
+        public static class BinaryFilesToHadoopSequenceFileMapper extends 
+        Mapper<Object, Text, Text, BytesWritable> {
  
                 public void map(
                         Object key, //key
@@ -34,21 +37,22 @@ public class BinaryFilesToHadoopSequenceFile {
                         Context context)
                 throws IOException, InterruptedException {
  
-                        logger.info("map method BinaryFiles To Hadoop Sequence File Mapper called..\n");
  
                         String uri = value.toString();
-                        logger.info("file name: "+uri+"\n");
+                        
                         Configuration conf = new Configuration();
                         FileSystem fs = FileSystem.get(URI.create(uri), conf);
                         FSDataInputStream in = null;
                         try {
                                 in = fs.open(new Path(uri));
                                 java.io.ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
                                 byte buffer[] = new byte[1024 * 1024];
  
                                 while( in.read(buffer, 0, buffer.length) >= 0 ) {
                                         bout.write(buffer);
                                 }
+
                                 context.write(value, new BytesWritable(bout.toByteArray()));
                         } finally {
                                 IOUtils.closeStream(in);

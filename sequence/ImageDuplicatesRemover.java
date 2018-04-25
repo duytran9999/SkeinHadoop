@@ -25,6 +25,7 @@ public class ImageDuplicatesRemover {
                 String md5Str;
                         try {
                                 md5Str = calculateMd5(value.getBytes());
+
                         } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                                 context.setStatus("Internal error - can't find the algorithm for calculating the md5");
