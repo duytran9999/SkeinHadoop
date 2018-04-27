@@ -52,7 +52,7 @@ public class DetectImageDuplicates {
   public static class ImageAhashMapper extends Mapper
   <Object, Text, Text, ArrayWritable> {
     
-    final static int WIDTH = 8, HEIGHT = 8; 
+    final static int WIDTH = 32, HEIGHT = 32; 
 
 //Map function
     public void map (Object key, Text value, 

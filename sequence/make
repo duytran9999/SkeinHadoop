@@ -1,0 +1,2 @@
+cpimg: 
+	java -cp commons-imaging-1.0-20130811.122228-3.jar:sanselan-0.97-incubator.jar:. cpimg ${img1} ${img2}
